@@ -43,32 +43,33 @@ elif player_event in ('unavailable', 'end_of_track', 'preload_next', 'preloading
     json_dict['track_id'] = os.environ['TRACK_ID']
 
 elif player_event == 'track_changed':
-    common_metadata_fields = {}
     item_type = os.environ['ITEM_TYPE']
-    common_metadata_fields['item_type'] = item_type
-    common_metadata_fields['track_id'] = os.environ['TRACK_ID']
-    common_metadata_fields['uri'] = os.environ['URI']
-    common_metadata_fields['name'] = os.environ['NAME']
-    common_metadata_fields['duration_ms'] = os.environ['DURATION_MS']
-    common_metadata_fields['is_explicit'] = os.environ['IS_EXPLICIT']
-    common_metadata_fields['language'] = os.environ['LANGUAGE'].split('\n')
+    common_metadata_fields = {
+        'item_type': item_type,
+        'track_id': os.environ['TRACK_ID'],
+        'uri': os.environ['URI'],
+        'name': os.environ['NAME'],
+        'duration_ms': os.environ['DURATION_MS'],
+        'is_explicit': os.environ['IS_EXPLICIT'],
+        'language': os.environ['LANGUAGE'].split('\n'),
+    }
     common_metadata_fields['covers'] = os.environ['COVERS'].split('\n')
     json_dict['common_metadata_fields'] = common_metadata_fields
-    
+
 
     if item_type == 'Track':
-        track_metadata_fields = {}
-        track_metadata_fields['number'] = os.environ['NUMBER']
-        track_metadata_fields['disc_number'] = os.environ['DISC_NUMBER']
-        track_metadata_fields['popularity'] = os.environ['POPULARITY']
-        track_metadata_fields['album'] = os.environ['ALBUM']
-        track_metadata_fields['artists'] = os.environ['ARTISTS'].split('\n')
+        track_metadata_fields = {
+            'number': os.environ['NUMBER'],
+            'disc_number': os.environ['DISC_NUMBER'],
+            'popularity': os.environ['POPULARITY'],
+            'album': os.environ['ALBUM'],
+            'artists': os.environ['ARTISTS'].split('\n'),
+        }
         track_metadata_fields['album_artists'] = os.environ['ALBUM_ARTISTS'].split('\n')
         json_dict['track_metadata_fields'] = track_metadata_fields
 
     elif item_type == 'Episode':
-        episode_metadata_fields = {}
-        episode_metadata_fields['show_name'] = os.environ['SHOW_NAME']
+        episode_metadata_fields = {'show_name': os.environ['SHOW_NAME']}
         publish_time = datetime.utcfromtimestamp(int(os.environ['PUBLISH_TIME'])).strftime('%Y-%m-%d')
         episode_metadata_fields['publish_time'] = publish_time
         episode_metadata_fields['description'] = os.environ['DESCRIPTION']
